@@ -3,6 +3,8 @@
 @author hanse/irene
 @data	2017-04-08	00:00:00	初稿
 		2017-04-21	00:00:00	整理代码
+		2017-04-21	21:51:00	对JSON与对象互转方法进行了升级,采用util中方法,并增强了调试日志输出
+
 **/
 
 
@@ -21,6 +23,7 @@ public class spider {
 		long startTime, endTime;
         startTime =System.currentTimeMillis();
         
+        /*********************************************/
         //System.out.println("【www.dianhou.com-爬取演示】");
 		Spider
 		.create(new dianhouProcessor())
@@ -29,6 +32,7 @@ public class spider {
 		.thread(5)
 		.start();
 		
+		/*********************************************/
 		//System.out.println("【rc.lyrc.net-爬取演示】");
 		Spider
 		.create(new lyrcProcessor())

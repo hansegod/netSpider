@@ -4,12 +4,15 @@
 @data	2017-04-08	00:00:00	初稿
 		2017-04-21	00:00:00	整理代码
 		2017-04-21	21:01:00	完善代码架构,按照设计稿进行了模块的划分,日志输出正常
+		2017-04-21	21:31:00	整理规范调试信息打印
 **/
 
 
 package com.wmost.spider.processor;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -25,8 +28,8 @@ import us.codecraft.webmagic.processor.PageProcessor;
 
 public class lyrcProcessor implements PageProcessor{
 	private static boolean IS_DEBUG = false;
-    public static final String URL_LIST ="http://rc\\.lyrc\\.net/Companyzp\\.aspx\\?Page=[1-9]{1,3}";
-    public static final String URL_POST="/Person_Lookzl/id-[0-9]{4}\\.html";
+    public static final String URL_TARGET ="/Person_Lookzl/id-[0-9]{4}\\.html";
+    public static final String URL_MORE="http://rc\\.lyrc\\.net/Companyzp\\.aspx\\?Page=[1-9]{1,3}";
 
     // 部分一：抓取网站的相关配置，包括编码、抓取间隔、重试次数等
     private Site site = Site.me().setRetryTimes(3).setSleepTime(1000); 
@@ -39,9 +42,8 @@ public class lyrcProcessor implements PageProcessor{
 		long startTime, endTime;
         startTime =System.currentTimeMillis();
 
-        List<String> urls = page.getHtml().css("div#paging").links().regex("/Companyzp\\.aspx\\?Page=").all();
-        if(!page.getUrl().regex(URL_LIST).match()){
-        	// 部分二：定义如何抽取页面信息，并保存下来
+        // 部分二：定义如何抽取页面信息，并保存下来
+        if(page.getUrl().regex(URL_TARGET).match()){
             String name =page.getHtml().xpath("//*[@width='61%']/table/tbody/tr[1]/td[2]/text()").get();//用户名
             String sex = page.getHtml().xpath("//*[@width='61%']/table/tbody/tr[1]/td[4]/text()").get();//性别
             String ethnic = page.getHtml().xpath("//*[@width='61%']/table/tbody/tr[2]/td[4]/text()").get().toString();//民族
@@ -73,13 +75,26 @@ public class lyrcProcessor implements PageProcessor{
             page.putField(LOG.user.hope_salary, hope_salary);
             page.putField(LOG.user.work_type, work_type);
             page.putField(LOG.server_ip, deviceIfo.getLocalIP());
+            
+            if (IS_DEBUG) {
+            	System.out.println(page.getRequest().getUrl()+"抽取的页面内容:");
+            	for (Map.Entry<String, Object> entry : page.getResultItems().getAll().entrySet()) {
+    	            System.out.println(entry.getKey() + ":\t" + entry.getValue());
+            	}
+            }
         }
-        else{
-        	// 部分三：从页面发现后续的url地址来抓取
-            page.addTargetRequests(page.getHtml().links().regex(URL_POST).all());
-            page.addTargetRequests(page.getHtml().links().regex(URL_LIST).all());
-            page.addTargetRequests(urls);
+
+        // 部分三：从页面发现后续的url地址来抓取
+		List<String> urls = new ArrayList<String>();
+		urls.addAll(page.getHtml().links().regex(URL_TARGET).all());
+		urls.addAll(page.getHtml().links().regex(URL_MORE).all());
+		if (urls.size()<=0) {
+			return;
+		}
+        page.addTargetRequests(urls);
+        
+        if (IS_DEBUG) {
+        	System.out.println("增加爬取url:"+urls.toString());
         }
 	}
-
 }

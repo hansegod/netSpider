@@ -1,10 +1,9 @@
 /**
-@description  抽取数据后期日志处理模块
+@description  抽取数据调试显示模块
 @author hanse/irene
 @data	2017-04-08	00:00:00	初稿
 		2017-04-21	00:00:00	整理代码
 		2017-04-21	21:01:00	完善代码架构,按照设计稿进行了模块的划分,日志输出正常
-		2017-04-21	21:51:00	对JSON与对象互转方法进行了升级,采用util中方法,并增强了调试日志输出
 **/
 
 
@@ -13,9 +12,9 @@ package com.wmost.spider.peline;
 import java.util.Map;
 import java.util.UUID;
 
-import net.sf.json.JSONObject;
-
 import org.apache.log4j.Logger;
+
+import net.sf.json.JSONObject;
 
 import com.wmost.spider.model.company;
 import com.wmost.spider.model.job;
@@ -30,8 +29,7 @@ import us.codecraft.webmagic.ResultItems;
 import us.codecraft.webmagic.Task;
 import us.codecraft.webmagic.pipeline.Pipeline;
 
-
-public class logpeline implements Pipeline {
+public class stdiopeline implements Pipeline {
 	private static boolean IS_DEBUG = false;
 	private Logger logger  =  Logger.getLogger(logpeline.class);
 
@@ -78,11 +76,8 @@ public class logpeline implements Pipeline {
 		
 		//日志输出
 		String s = logPrintln(resultItems,o);
-		if (IS_DEBUG && null != s) {
-			System.out.println("拼装的日志为:"+s);
-		}
-		if (null != logger && null != s) {
-			logger.fatal(s);
+		if (null != s) {
+			System.out.println(s);
 		}
 	}
 	
