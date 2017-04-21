@@ -6,6 +6,9 @@
 		2017-04-21	21:01:00	完善代码架构,按照设计稿进行了模块的划分,日志输出正常
 		2017-04-21	21:31:00	整理规范调试信息打印
 		2017-04-21	21:41:00	修正增加爬取链接逻辑
+		2017-04-21	22:21:00	升级获取外网IP方法
+		
+		
 **/
 
 
@@ -25,9 +28,10 @@ import us.codecraft.webmagic.processor.PageProcessor;
 
 public class dianhouProcessor implements PageProcessor {
 	private static boolean IS_DEBUG = false;
-    public static final String URL_TARGET ="http://www\\.dianhou\\.com/company\\?p=company\\&page=[1-9]{1,3}";
-    public static final String URL_MORE="/p=company\\&page=[1-9]{1,3}\\.html";
-
+    public static final String URL_TARGET = "http://www\\.dianhou\\.com/company\\?p=company\\&page=[1-9]{1,3}";
+    public static final String URL_MORE = "/p=company\\&page=[1-9]{1,3}\\.html";
+    public static final String server_ip = deviceIfo.getV4IP();
+    
 	// 部分一：抓取网站的相关配置，包括编码、抓取间隔、重试次数等
     private Site page = Site.me().setRetryTimes(3).setSleepTime(1000);
 	public Site getSite() {
@@ -50,7 +54,7 @@ public class dianhouProcessor implements PageProcessor {
 			page.putField(LOG.company.name, name);
 			page.putField(LOG.company.location, location);
 			page.putField(LOG.company.identity, location);
-			page.putField(LOG.server_ip, deviceIfo.getLocalIP());
+			page.putField(LOG.server_ip, server_ip);
         
             if (IS_DEBUG) {
             	System.out.println(page.getRequest().getUrl()+"抽取的页面内容:");

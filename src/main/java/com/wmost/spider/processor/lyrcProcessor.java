@@ -5,6 +5,9 @@
 		2017-04-21	00:00:00	整理代码
 		2017-04-21	21:01:00	完善代码架构,按照设计稿进行了模块的划分,日志输出正常
 		2017-04-21	21:31:00	整理规范调试信息打印
+		2017-04-21	22:21:00	升级获取外网IP方法
+		
+		
 **/
 
 
@@ -30,7 +33,8 @@ public class lyrcProcessor implements PageProcessor{
 	private static boolean IS_DEBUG = false;
     public static final String URL_TARGET ="/Person_Lookzl/id-[0-9]{4}\\.html";
     public static final String URL_MORE="http://rc\\.lyrc\\.net/Companyzp\\.aspx\\?Page=[1-9]{1,3}";
-
+    public static final String server_ip = deviceIfo.getV4IP();
+    
     // 部分一：抓取网站的相关配置，包括编码、抓取间隔、重试次数等
     private Site site = Site.me().setRetryTimes(3).setSleepTime(1000); 
 	public Site getSite() {
@@ -74,7 +78,7 @@ public class lyrcProcessor implements PageProcessor{
             page.putField(LOG.user.hope_salary, hope_salary);
             page.putField(LOG.user.hope_salary, hope_salary);
             page.putField(LOG.user.work_type, work_type);
-            page.putField(LOG.server_ip, deviceIfo.getLocalIP());
+            page.putField(LOG.server_ip, server_ip);
             
             if (IS_DEBUG) {
             	System.out.println(page.getRequest().getUrl()+"抽取的页面内容:");

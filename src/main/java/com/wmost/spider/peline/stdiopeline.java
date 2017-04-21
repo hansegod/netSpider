@@ -31,7 +31,7 @@ import us.codecraft.webmagic.pipeline.Pipeline;
 
 public class stdiopeline implements Pipeline {
 	private static boolean IS_DEBUG = false;
-	private Logger logger  =  Logger.getLogger(logpeline.class);
+	private static Logger logger  =  Logger.getLogger(logpeline.class);
 
 	@Override
 	public void process(ResultItems resultItems, Task task) {

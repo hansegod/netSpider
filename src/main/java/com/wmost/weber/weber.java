@@ -8,6 +8,15 @@
 
 package com.wmost.weber;
 
-public class weber {
 
+public class weber {
+	public static void submit(String[] args) {
+		long startTime, endTime;
+        startTime =System.currentTimeMillis();
+        
+        
+		
+        endTime = System.currentTimeMillis();
+        System.out.println("【服务引擎】启动完成,耗时(ms):" + (endTime - startTime));
+	}
 }

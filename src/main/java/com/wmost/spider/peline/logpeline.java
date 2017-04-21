@@ -55,7 +55,7 @@ public class logpeline implements Pipeline {
 			System.out.println("收到json为:"+json.toString());
 		}
 		
-		//JSON转类
+		//JSON转类(!!!当新增统计类型时修改本处)
 		Object o = null;
 		String log_type = map.get(LOG.log_type).toString();
 		switch (log_type){
