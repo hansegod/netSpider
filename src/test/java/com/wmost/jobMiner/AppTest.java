@@ -1,4 +1,4 @@
-package com.ufire.netSpider;
+package com.wmost.jobMiner;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

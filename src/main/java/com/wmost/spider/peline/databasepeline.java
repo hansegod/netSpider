@@ -1,10 +1,13 @@
 /**
-@description  抽取数据调试显示模块
+@description  抽取数据调试显示模块(单机测试模式时,数据直接写入数据库)
 @author hanse/irene
-@data	2017-04-08	00:00:00	初稿
-		2017-04-21	00:00:00	整理代码
-		2017-04-21	21:01:00	完善代码架构,按照设计稿进行了模块的划分,日志输出正常
-		2017-04-21	21:01:00	该部分还未实现数据库写入
+@data	2017-04-08	00:00	初稿
+		2017-04-21	00:00	整理代码
+		2017-04-21	21:01	完善代码架构,按照设计稿进行了模块的划分,日志输出正常
+		2017-04-21	21:01	该部分还未实现数据库写入
+		
+		
+		
 **/
 
 
@@ -13,17 +16,14 @@ package com.wmost.spider.peline;
 import java.util.Map;
 import java.util.UUID;
 
-import net.sf.json.JSONObject;
-
 import org.apache.log4j.Logger;
 
+import com.google.gson.Gson;
 import com.wmost.spider.model.company;
-import com.wmost.spider.model.job;
-import com.wmost.spider.model.user;
-import com.wmost.util.json2Obj;
-import com.wmost.util.safeString;
+import com.wmost.spider.model.position;
+import com.wmost.spider.model.candidate;
+import com.wmost.util.SafeString;
 import com.wmost.cfig.LOG;
-import com.wmost.cfig.LOG_TYPE;
 import com.wmost.cfig.UNICODE;
 
 import us.codecraft.webmagic.ResultItems;
@@ -41,34 +41,28 @@ public class databasepeline implements Pipeline {
 			return;
 		}
 		
+		Map<String, Object> map = resultItems.getAll();
 		if (IS_DEBUG) {
 			for (Map.Entry<String, Object> entry : resultItems.getAll().entrySet()) {
 	            System.out.println(entry.getKey() + ":\t" + entry.getValue());
 			}
 		}
 		
-		//Map转JSON
-		Map<String, Object> map = resultItems.getAll();
-		JSONObject json = JSONObject.fromObject(map); 
-		if (IS_DEBUG) {
-			System.out.println("收到json为:"+json.toString());
-		}
-		
-		//JSON转类
-		Object o = null;
+		//JSON转类(!!!当新增统计类型时修改本处)
+		Object[] o = null;
 		String log_type = map.get(LOG.log_type).toString();
 		switch (log_type){
-			case LOG_TYPE.LOG_TYPE_USER+"":
-				o=(user)json2Obj.mapToObject(json,user.class);
+			case LOG.LOG_TYPE.LOG_TYPE_CANDIDATE+"":
+				o=(candidate[]) new Gson().fromJson((String) map.get(LOG.body), candidate[].class);
 				break;
-			case LOG_TYPE.LOG_TYPE_COMPANY+"":
-				o=(company)json2Obj.mapToObject(map, company.class);
+			case LOG.LOG_TYPE.LOG_TYPE_COMPANY+"":
+				o=(company[]) new Gson().fromJson((String) map.get(LOG.body), company[].class);
 				break;
-			case LOG_TYPE.LOG_TYPE_JOB+"":
-				o=(job)json2Obj.mapToObject(json,job.class);
+			case LOG.LOG_TYPE.LOG_TYPE_POSITION+"":
+				o=(position[]) new Gson().fromJson((String) map.get(LOG.body), position[].class);
 				break;
 			default:
-				o=new String("unrecognition log_type!");
+				o=new String[]{"unrecognition log_type!"};
 				break;
 		}
 		if (IS_DEBUG) {
@@ -76,9 +70,14 @@ public class databasepeline implements Pipeline {
 		}
 		
 		//日志输出
-		String s = logPrintln(resultItems,o);
-		if (null != s) {
-			System.out.println(s);
+		for (Object oo:o) {
+			if (null == oo) {
+				continue;
+			}
+			String s = logPrintln(resultItems,oo);
+			if (IS_DEBUG && null != s) {
+				System.out.println(s);
+			}
 		}
 	}
 	
@@ -109,7 +108,7 @@ public class databasepeline implements Pipeline {
 				search_key,
 				time_ms,
 				error_code,
-				safeString.to(body),
+				SafeString.to(body),
 				server_ip
 				);		
 	}

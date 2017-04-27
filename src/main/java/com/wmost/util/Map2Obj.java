@@ -1,3 +1,13 @@
+/**
+@description  map与对象互转工具类
+@author hanse/irene
+@data	2017-04-08	00:00	初稿
+		2017-04-21	00:00	整理代码
+		
+		
+**/
+
+
 package com.wmost.util;
 
 import java.beans.BeanInfo;
@@ -11,7 +21,7 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
-public class json2Obj {
+public class Map2Obj {
 /****方式1****/
 //    public static Object mapToObject(Map<String, Object> map, Class<?> beanClass) {    
 //        if (map == null){

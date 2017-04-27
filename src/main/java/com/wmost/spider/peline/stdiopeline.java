@@ -1,9 +1,11 @@
 /**
-@description  抽取数据调试显示模块
+@description  抽取数据调试显示模块(开发调试模式时,单机直接输出信息至控制台)
 @author hanse/irene
-@data	2017-04-08	00:00:00	初稿
-		2017-04-21	00:00:00	整理代码
-		2017-04-21	21:01:00	完善代码架构,按照设计稿进行了模块的划分,日志输出正常
+@data	2017-04-08	00:00	初稿
+		2017-04-21	00:00	整理代码
+		2017-04-21	21:01	完善代码架构,按照设计稿进行了模块的划分,日志输出正常
+
+
 **/
 
 
@@ -17,12 +19,11 @@ import org.apache.log4j.Logger;
 import net.sf.json.JSONObject;
 
 import com.wmost.spider.model.company;
-import com.wmost.spider.model.job;
-import com.wmost.spider.model.user;
-import com.wmost.util.json2Obj;
-import com.wmost.util.safeString;
+import com.wmost.spider.model.position;
+import com.wmost.spider.model.candidate;
+import com.wmost.util.Map2Obj;
+import com.wmost.util.SafeString;
 import com.wmost.cfig.LOG;
-import com.wmost.cfig.LOG_TYPE;
 import com.wmost.cfig.UNICODE;
 
 import us.codecraft.webmagic.ResultItems;
@@ -57,14 +58,14 @@ public class stdiopeline implements Pipeline {
 		Object o = null;
 		String log_type = map.get(LOG.log_type).toString();
 		switch (log_type){
-			case LOG_TYPE.LOG_TYPE_USER+"":
-				o=(user)json2Obj.mapToObject(json,user.class);
+			case LOG.LOG_TYPE.LOG_TYPE_CANDIDATE+"":
+				o=(candidate)Map2Obj.mapToObject(json,candidate.class);
 				break;
-			case LOG_TYPE.LOG_TYPE_COMPANY+"":
-				o=(company)json2Obj.mapToObject(map, company.class);
+			case LOG.LOG_TYPE.LOG_TYPE_COMPANY+"":
+				o=(company)Map2Obj.mapToObject(map, company.class);
 				break;
-			case LOG_TYPE.LOG_TYPE_JOB+"":
-				o=(job)json2Obj.mapToObject(json,job.class);
+			case LOG.LOG_TYPE.LOG_TYPE_POSITION+"":
+				o=(position)Map2Obj.mapToObject(json,position.class);
 				break;
 			default:
 				o=new String("unrecognition log_type!");
@@ -108,7 +109,7 @@ public class stdiopeline implements Pipeline {
 				search_key,
 				time_ms,
 				error_code,
-				safeString.to(body),
+				SafeString.to(body),
 				server_ip
 				);		
 	}

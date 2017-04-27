@@ -1,15 +1,15 @@
 /**
 @description  将字符串进行安全处理(对一些禁用字符进行处理)
 @author hanse/irene
-@data	2017-04-21	21:01:00	初稿
-		2017-04-21	21:51:00	暂未实现
+@data	2017-04-21	21:01	初稿
+		2017-04-21	21:51	暂未实现
 
 **/
 
 
 package com.wmost.util;
 
-public class safeString {
+public class SafeString {
 	public static String to(String s){
 		
 		return s;
