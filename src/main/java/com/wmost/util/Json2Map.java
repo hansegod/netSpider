@@ -83,7 +83,8 @@ public class Json2Map {
         return sbJsonValue.toString();  
     }
     //生成json数组对象  
-    private static String buildJsonArray(Object value, int tabCount, boolean addComma)  
+    @SuppressWarnings("rawtypes")
+	private static String buildJsonArray(Object value, int tabCount, boolean addComma)  
     {  
         StringBuilder sbJsonArray = new StringBuilder();  
         sbJsonArray.append("[\n");  
@@ -137,7 +138,7 @@ public class Json2Map {
      * @param jsonstring 合法格式的json字符串
      * @return 有可能map有可能是list
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public static Object json2Map2(String jsonstring){
     	Stack<Map> maps=new Stack<Map>(); 			//用来表示多层的json对象
         Stack<List> lists=new Stack<List>(); 		//用来表示多层的list对象

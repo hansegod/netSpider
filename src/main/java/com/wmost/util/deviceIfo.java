@@ -105,6 +105,7 @@ public class DeviceIfo {
 	/**
 	 * 获取本机所有IP
 	 */
+	@SuppressWarnings({ "unused", "rawtypes" })
 	private static String[] getAllLocalHostIP() {
 		List<String> res = new ArrayList<String>();
 		Enumeration netInterfaces;

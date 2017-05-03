@@ -1,6 +1,7 @@
 package com.wmost.spider.sample;
 
 import org.apache.commons.collections.CollectionUtils;
+
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
@@ -17,7 +18,8 @@ public class AngularJSProcessor implements PageProcessor {
 
     private Site site = Site.me();
 
-    private static final String ARITICALE_URL = "http://angularjs\\.cn/api/article/\\w+";
+    @SuppressWarnings("unused")
+	private static final String ARITICALE_URL = "http://angularjs\\.cn/api/article/\\w+";
 
     private static final String LIST_URL = "http://angularjs\\.cn/api/article/latest.*";
 

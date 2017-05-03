@@ -71,6 +71,13 @@
 		       <artifactId>commons-logging</artifactId>
 		       <version>1.2</version>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
+		<dependency>
+		    <groupId>org.mybatis</groupId>
+		    <artifactId>mybatis</artifactId>
+		    <version>3.4.1</version>
+		</dependency>
 		   
 		<!-- 导入java ee jar 包 -->  
 		<dependency>  
@@ -92,6 +99,14 @@
             <artifactId>jobMiner-cfig</artifactId>
             <version>1.0.0</version>
         </dependency>
+        
+		<!-- Reducer -->
+        <dependency>
+            <groupId>com.wmost.jobMiner</groupId>
+            <artifactId>jobMiner-reducer</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        
 	</dependencies>
 	
 	<build>  
