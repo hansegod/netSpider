@@ -34,7 +34,7 @@ public class dianhouCompanyProcessor implements PageProcessor {
 	
 	//"http://www\\.dianhou\\.com/company\\?p=company\\&page=[1-9]{1,3}";
     public static final String URL_TARGET = "http://www\\.dianhou\\.com/company/detail/[0-9]{1,10}";
-    public static final String URL_MORE = ".*p=company\\&page=[0-9]{1,10}\\.html";
+    public static final String URL_MORE = "http://www\\.dianhou\\.com/company\\?p=company\\&page=[0-9]{1,10}.*";
     public static final String server_ip = DeviceIfo.getV4IP();
     
 	// 部分一：抓取网站的相关配置，包括编码、抓取间隔、重试次数等
